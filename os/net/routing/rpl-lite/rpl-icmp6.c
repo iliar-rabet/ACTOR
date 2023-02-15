@@ -48,6 +48,7 @@
 #include "net/ipv6/uip-icmp6.h"
 #include "net/packetbuf.h"
 #include "lib/random.h"
+#include "net/link-stats.h"
 
 #include <limits.h>
 
@@ -226,14 +227,14 @@ dio_input(void)
     }
 
     if(len + i > buffer_length) {
-      LOG_ERR("dio_input: malformed packet, discard\n");
+      printf("dio_input: malformed packet, discard\n");
       goto discard;
     }
 
     switch(subopt_type) {
       case RPL_OPTION_DAG_METRIC_CONTAINER:
         if(len < 6) {
-          LOG_WARN("dio_input: invalid DAG MC, len %u, discard\n", len);
+          printf("dio_input: invalid DAG MC, len %u, discard\n", len);
           goto discard;
         }
         dio.mc.type = buffer[i + 2];
@@ -251,13 +252,13 @@ dio_input(void)
           dio.mc.obj.energy.flags = buffer[i + 6];
           dio.mc.obj.energy.energy_est = buffer[i + 7];
         } else {
-          LOG_WARN("dio_input: unsupported DAG MC type %u, discard\n", (unsigned)dio.mc.type);
+          printf("dio_input: unsupported DAG MC type %u, discard\n", (unsigned)dio.mc.type);
           goto discard;
         }
         break;
       case RPL_OPTION_ROUTE_INFO:
         if(len < 9) {
-          LOG_WARN("dio_input: invalid destination prefix option, len %u, discard\n", len);
+          printf("dio_input: invalid destination prefix option, len %u, discard\n", len);
           goto discard;
         }
 
@@ -271,14 +272,14 @@ dio_input(void)
           memcpy(&dio.destination_prefix.prefix, &buffer[i + 8],
                  (dio.destination_prefix.length + 7) / 8);
         } else {
-          LOG_WARN("dio_input: invalid route info option, len %u, discard\n", len);
+          printf("dio_input: invalid route info option, len %u, discard\n", len);
           goto discard;
         }
 
         break;
       case RPL_OPTION_DAG_CONF:
         if(len != 16) {
-          LOG_WARN("dio_input: invalid DAG configuration option, len %u, discard\n", len);
+          printf("dio_input: invalid DAG configuration option, len %u, discard\n", len);
           goto discard;
         }
 
@@ -295,7 +296,7 @@ dio_input(void)
         break;
       case RPL_OPTION_PREFIX_INFO:
         if(len != 32) {
-          LOG_WARN("dio_input: invalid DAG prefix info, len %u, discard\n", len);
+          printf("dio_input: invalid DAG prefix info, len %u, discard\n", len);
           goto discard;
         }
         dio.prefix_info.length = buffer[i + 2];
@@ -307,7 +308,7 @@ dio_input(void)
         memcpy(&dio.prefix_info.prefix, &buffer[i + 16], 16);
         break;
       default:
-        LOG_WARN("dio_input: unsupported suboption type in DIO: %u, discard\n", (unsigned)subopt_type);
+        printf("dio_input: unsupported suboption type in DIO: %u, discard\n", (unsigned)subopt_type);
         goto discard;
     }
   }
@@ -325,6 +326,7 @@ dio_input(void)
   rpl_process_dio(&from, &dio);
 
 discard:
+  // printf("discarding DIO either with or without processing\n");
   uipbuf_clear();
 }
 /*---------------------------------------------------------------------------*/
@@ -442,13 +444,22 @@ rpl_icmp6_dio_output(uip_ipaddr_t *uc_addr)
     addr = addr != NULL ? addr : &rpl_multicast_addr;
   }
 
-  LOG_INFO("sending a %s-DIO with rank %u to ",
+  printf("sending a %s-DIO with rank %u to ",
          uc_addr != NULL ? "unicast" : "multicast",
          (unsigned)curr_instance.dag.rank);
-  LOG_INFO_6ADDR(addr);
-  LOG_INFO_("\n");
+  LOG_ERR_6ADDR(addr);
+  LOG_ERR_("\n");
+
+  #ifdef PCRPL
+  max_txpower();
+  #endif
 
   uip_icmp6_send(addr, ICMP6_RPL, RPL_CODE_DIO, pos);
+
+  #ifdef PCRPL
+  reset_txpower();
+  #endif
+
 }
 /*---------------------------------------------------------------------------*/
 static void

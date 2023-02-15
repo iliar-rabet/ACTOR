@@ -1,0 +1,35 @@
+rpl-classic/rpl-nbr-policy.c:#include "net/routing/rpl-classic/rpl-nbr-policy.h"
+rpl-classic/rpl-nbr-policy.c:#include "net/nbr-table.h"
+rpl-classic/rpl-of0.c:#include "net/nbr-table.h"
+rpl-classic/rpl-dag.c:#include "net/nbr-table.h"
+rpl-classic/rpl.c:  LOG_DBG_6ADDR(&nbr->ipaddr);
+rpl-classic/rpl.c:  LOG_DBG_(", nscount=%u, state=%u\n", nbr->nscount, nbr->state);
+rpl-classic/rpl.c:  LOG_DBG_(", state=%u\n", nbr->state);
+rpl-classic/rpl.c:      p = rpl_find_parent_any_dag(instance, &nbr->ipaddr);
+rpl-classic/rpl-mrhof.c:#include "net/nbr-table.h"
+rpl-lite/rpl-nbr-policy.c:#include "net/nbr-table.h"
+rpl-lite/rpl-of0.c:#include "net/nbr-table.h"
+rpl-lite/rpl-of0.c:  return MIN((uint32_t)nbr->rank + nbr_link_metric(nbr), 0xffff);
+rpl-lite/rpl-of0.c:    return MIN((uint32_t)nbr->rank + nbr_rank_increase(nbr), RPL_INFINITE_RANK);
+rpl-lite/rpl-dag.c:#include "net/nbr-table.h"
+rpl-lite/rpl-dag.c:        if(nbr->better_parent_since == 0) {
+rpl-lite/rpl-dag.c:          nbr->better_parent_since = clock_time(); /* Initialize */
+rpl-lite/rpl-dag.c:        nbr->better_parent_since = 0; /* Not a better parent */
+rpl-lite/rpl-dag.c:  nbr->rank = dio->rank;
+rpl-lite/rpl-dag.c:  nbr->dtsn = dio->dtsn;
+rpl-lite/rpl-dag.c:  memcpy(&nbr->mc, &dio->mc, sizeof(nbr->mc));
+rpl-lite/rpl-dag.c:  last_dtsn = nbr != NULL ? nbr->dtsn : RPL_LOLLIPOP_INIT;
+rpl-lite/rpl-neighbor.c:#include "net/nbr-table.h"
+rpl-lite/rpl-neighbor.c:      nbr->rank,
+rpl-lite/rpl-neighbor.c:      (nbr->rank == ROOT_RANK) ? 'r' : ' ',
+rpl-lite/rpl-neighbor.c:  if(nbr->better_parent_since > 0) {
+rpl-lite/rpl-neighbor.c:                              (unsigned)((clock_now - nbr->better_parent_since) / (60 * CLOCK_SECOND)));
+rpl-lite/rpl-neighbor.c:  return nbr != NULL && nbr->rank < curr_instance.dag.rank;
+rpl-lite/rpl-mrhof.c:#include "net/nbr-table.h"
+rpl-lite/rpl-mrhof.c:      base = nbr->mc.obj.etx;
+rpl-lite/rpl-mrhof.c:      base = nbr->mc.obj.energy.energy_est << 8;
+rpl-lite/rpl-mrhof.c:      base = nbr->rank;
+rpl-lite/rpl-mrhof.c:  base = nbr->rank;
+rpl-lite/rpl-mrhof.c:  return MAX(MIN((uint32_t)nbr->rank + min_hoprankinc, RPL_INFINITE_RANK), path_cost);
+rpl-lite/rpl-mrhof.c:  int within_time_hysteresis = nbr->better_parent_since == 0
+rpl-lite/rpl-mrhof.c:    || (clock_time() - nbr->better_parent_since) <= TIME_THRESHOLD;

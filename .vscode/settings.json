@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "chrono": "c",
+        "random": "c",
+        "limits": "c",
+        "routing.h": "c",
+        "export": "c",
+        "uiplib.h": "c",
+        "uip-ds6-nbr.h": "c"
+    },
+    "C_Cpp.default.configurationProvider": "nrf-connect"
+}

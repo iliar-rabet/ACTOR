@@ -84,7 +84,7 @@
 #ifdef RPL_CONF_OF_OCP
 #define RPL_OF_OCP RPL_CONF_OF_OCP
 #else /* RPL_CONF_OF_OCP */
-#define RPL_OF_OCP RPL_OCP_MRHOF
+#define RPL_OF_OCP RPL_OCP_OF0
 #endif /* RPL_CONF_OF_OCP */
 
 /*
@@ -95,7 +95,7 @@
 #ifdef RPL_CONF_SUPPORTED_OFS
 #define RPL_SUPPORTED_OFS RPL_CONF_SUPPORTED_OFS
 #else /* RPL_CONF_SUPPORTED_OFS */
-#define RPL_SUPPORTED_OFS {&rpl_mrhof}
+#define RPL_SUPPORTED_OFS {&rpl_of0}
 #endif /* RPL_CONF_SUPPORTED_OFS */
 
 /*
@@ -126,7 +126,7 @@
 #ifdef RPL_CONF_WITH_DAO_ACK
 #define RPL_WITH_DAO_ACK RPL_CONF_WITH_DAO_ACK
 #else
-#define RPL_WITH_DAO_ACK 1
+#define RPL_WITH_DAO_ACK 0
 #endif /* RPL_CONF_WITH_DAO_ACK */
 
 /*
@@ -155,7 +155,7 @@
 #ifdef RPL_CONF_WITH_PROBING
 #define RPL_WITH_PROBING RPL_CONF_WITH_PROBING
 #else
-#define RPL_WITH_PROBING 1
+#define RPL_WITH_PROBING 0
 #endif
 
 /*

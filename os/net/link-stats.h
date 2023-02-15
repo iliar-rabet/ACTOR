@@ -84,6 +84,8 @@ struct link_packet_counter {
 struct link_stats {
   clock_time_t last_tx_time;  /* Last Tx timestamp */
   uint16_t etx;               /* ETX using ETX_DIVISOR as fixed point divisor. Zero if not yet measured. */
+  uint16_t txP;               
+
   int16_t rssi;               /* RSSI (received signal strength). LINK_STATS_RSSI_UNKNOWN if not yet measured. */
   uint8_t freshness;          /* Freshness of the statistics. Zero if no packets sent yet. */
 #if LINK_STATS_ETX_FROM_PACKET_COUNT
@@ -112,4 +114,40 @@ void link_stats_packet_sent(const linkaddr_t *lladdr, int status, int numtx);
 /* Packet input callback. Updates statistics for receptions on a given link */
 void link_stats_input_callback(const linkaddr_t *lladdr);
 
+#ifndef WIN_SIZE
+#define WIN_SIZE 3
+#endif
+
+#ifndef TX_LEVELS
+#define TX_LEVELS 8
+#endif
+
+
+struct rl_list {
+  uint8_t txpower;               /* RSSI (received signal strength) */
+  uint8_t k[8];          
+  #ifndef sliding_UCB
+  uint8_t Q[8];
+  #endif
+  uint8_t t;
+  uint8_t flag[8];
+};
+typedef struct rl_list rl_list_t;
+
+struct rl_list *rl_from_lladdr(const linkaddr_t *lladdr);
+int UCB(struct rl_list *);
+#include "net/ipv6/uip-ds6-nbr.h"
+int req;
+void print_rl();
+void best_txpower(struct rl_list *rl_nbr);
+void max_txpower();
+void set_txpower(int);
+void reset_txpower();
+// #define MABRPL
+// #define PCRPL
+// #define discounted_UCB
+
+#ifdef sliding_UCB
+uint8_t sliding_window[TX_LEVELS][WIN_SIZE];
+#endif
 #endif /* LINK_STATS_H_ */

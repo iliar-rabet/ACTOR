@@ -46,6 +46,8 @@
 #define SICSLOWPAN_CONF_FRAG 0
 #define UIP_CONF_BUFFER_SIZE 160
 
+#define UIP_CONF_TCP 0
+
 /*******************************************************/
 /******************* Configure TSCH ********************/
 /*******************************************************/
@@ -57,10 +59,8 @@
 #define APP_SLOTFRAME_SIZE 17
 
 #if WITH_SECURITY
-
 /* Enable security */
 #define LLSEC802154_CONF_ENABLED 1
-
 #endif /* WITH_SECURITY */
 
 /*******************************************************/
@@ -69,11 +69,11 @@
 
 /* Logging */
 #define LOG_CONF_LEVEL_RPL                         LOG_LEVEL_WARN
-#define LOG_CONF_LEVEL_TCPIP                       LOG_LEVEL_WARN
-#define LOG_CONF_LEVEL_IPV6                        LOG_LEVEL_WARN
-#define LOG_CONF_LEVEL_6LOWPAN                     LOG_LEVEL_WARN
+#define LOG_CONF_LEVEL_TCPIP                       LOG_LEVEL_NONE
+#define LOG_CONF_LEVEL_IPV6                        LOG_LEVEL_NONE
+#define LOG_CONF_LEVEL_6LOWPAN                     LOG_LEVEL_NONE
 #define LOG_CONF_LEVEL_MAC                         LOG_LEVEL_DBG
 #define LOG_CONF_LEVEL_FRAMER                      LOG_LEVEL_WARN
-#define TSCH_LOG_CONF_PER_SLOT                     1
+#define TSCH_LOG_CONF_PER_SLOT                     0
 
 #endif /* PROJECT_CONF_H_ */

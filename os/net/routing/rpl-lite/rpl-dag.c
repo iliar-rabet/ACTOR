@@ -266,11 +266,9 @@ void
 rpl_dag_update_state(void)
 {
   rpl_rank_t old_rank;
-
   if(!curr_instance.used) {
     return;
   }
-
   old_rank = curr_instance.dag.rank;
   /* Any scheduled state update is no longer needed */
   rpl_timers_unschedule_state_update();
@@ -290,6 +288,7 @@ rpl_dag_update_state(void)
 
     /* Select and set preferred parent */
     rpl_neighbor_set_preferred_parent(rpl_neighbor_select_best());
+    
     /* Update rank  */
     curr_instance.dag.rank = rpl_neighbor_rank_via_nbr(curr_instance.dag.preferred_parent);
 
@@ -327,7 +326,6 @@ rpl_dag_update_state(void)
 
     /* Parent switch */
     if(curr_instance.dag.unprocessed_parent_switch) {
-
       if(curr_instance.dag.preferred_parent != NULL) {
         /* We just got a parent (was NULL), reset trickle timer to advertise this */
         if(old_parent == NULL) {
@@ -366,8 +364,7 @@ static rpl_nbr_t *
 update_nbr_from_dio(uip_ipaddr_t *from, rpl_dio_t *dio)
 {
   rpl_nbr_t *nbr = NULL;
-  const uip_lladdr_t *lladdr;
-
+  const uip_lladdr_t *lladdr; 
   nbr = rpl_neighbor_get_from_ipaddr(from);
   /* Neighbor not in RPL neighbor table, add it */
   if(nbr == NULL) {

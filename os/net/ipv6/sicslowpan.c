@@ -1528,7 +1528,6 @@ packet_sent(void *ptr, int status, int transmissions)
   if(linkaddr_cmp(dest, &linkaddr_null)) {
     return;
   }
-
   /* Update neighbor link statistics */
   link_stats_packet_sent(dest, status, transmissions);
 
