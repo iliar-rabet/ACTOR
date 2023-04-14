@@ -120,7 +120,7 @@ jobs:
         rm -f ccache-4.6.1-linux-x86_64.tar.xz
 
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2.2
+      uses: hendrikmuhs/ccache-action@v1.2.9
       with:
         key: compilation-${{ matrix.test }}
         max-size: 250M
